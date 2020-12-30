@@ -7,12 +7,23 @@
 
  const languageString = {
      "en-US" : {
-         welcomeMsg : `Welcome to Fizz Buzz. We’ll each take turns counting up from one. However, you must replace numbers divisible by 3 with the word “fizz” and you must replace numbers divisible by 5 with the word “buzz”. If a number is divisible by both 3 and 5, you should instead say “fizz buzz”. If you get one wrong, you lose.`,
+         welcomeMsg : `Welcome to Fizz Buzz. We’ll each take turns counting up from one. However, you must replace numbers divisible by 3 with the word “fizz” and you must replace numbers divisible by 5 with the word “buzz”. If a number is divisible by both 3 and 5, you should instead say “fizz buzz”. If you get one wrong, you lose. OK, I’ll start... One.`,
          welcomeRepromptMsg : 'Now you must decide what to say for the number 2',
+         wrongAnswerMsg : `I'm sorry the correct response was “${sayFizzBuzz(currentNum)}”. You lose! Thanks for playing Fizz Buzz. For another great Alexa game, check out Song Quiz!`,
+         helpMsg : 'You must keep track of what number we are on and decide what to say based off the rules of the game. If you are not sure take a guess',
+         stopMsg : 'Thank you for playing Fizz Buzz. I hope you enjoyed',
+         fallbackMsg : `Sorry, I didn't understand what you said. Please say a number or one of the keywords for the Fizz Buzz game.`,
+         errorMsg : 'Sorry, I had trouble doing what you asked. Please try again.',
+
      },
      "es-US" : {
-         welcomeMsg : `Bienvenido a Fizz Buzz. Cada uno de nosotros se turnará para contar desde uno. Sin embargo, debe reemplazar los números divisibles por 3 con la palabra "fizz" y debe reemplazar los números divisibles por 5 con la palabra "buzz". Si un número es divisible tanto por 3 como por 5, en su lugar debería decir "fizz buzz". Si te equivocas, pierdes.`,
-         welcomeRepromptMsg : 'Ahora debes decidir qué decir para el número 2', 
+         welcomeMsg : `Bienvenido a Fizz Buzz. Cada uno de nosotros se turnará para contar desde uno. Sin embargo, debe reemplazar los números divisibles por 3 con la palabra "fizz" y debe reemplazar los números divisibles por 5 con la palabra "buzz". Si un número es divisible tanto por 3 como por 5, en su lugar debería decir "fizz buzz". Si te equivocas, pierdes. Bien, empezaré ... Uno.`,
+         welcomeRepromptMsg : 'Ahora debes decidir qué decir para el número 2',
+         wrongAnswerMsg : `Lo siento, la respuesta correcta fue" ${sayFizzBuzz (currentNum)}". ¡Tú pierdes! Gracias por jugar a Fizz Buzz. ¡Para ver otro gran juego de Alexa, echa un vistazo a Song Quiz!`,
+         helpMsg : `Debe realizar un seguimiento de en qué número estamos y decidir qué decir basándose en las reglas del juego. Si no está seguro, adivine`,
+         stopMsg : `Gracias por jugar a Fizz Buzz. Espero que lo hayas disfrutado'`, 
+         fallbackMsg : `Lo siento, no entendí lo que dijiste. Diga un número o una de las palabras clave del juego Fizz Buzz.`,
+         errorMsg : `Lo siento, tuve problemas para hacer lo que me pediste. Inténtalo de nuevo.`,
      }
  };
 
@@ -32,7 +43,7 @@ const LaunchRequestHandler = {
         const speakOutput = languageString[handlerInput.requestEnvelope.request.locale].welcomeMsg;
         
         // a remprompt is added just in case the user doesn't know what to do next
-        const repromptOutput = 'Now you must decide what to say for the number 2';
+        const repromptOutput = languageString[handlerInput.requestEnvelope.request.locale].welcomeRepromptMsg;
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(repromptOutput)
@@ -82,7 +93,7 @@ const FizzBuzzIntentHandler = {
             .getResponse();
         }
         else {
-            const speakOutput = `I'm sorry the correct response was “${sayFizzBuzz(currentNum)}”. You lose! Thanks for playing Fizz Buzz. For another great Alexa game, check out Song Quiz!`;
+            const speakOutput = languageString[handlerInput.requestEnvelope.request.locale].wrongAnswerMsg;
             // this responseBuilder outputs the closing remarks of the skill and exits gracefully
             return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -148,7 +159,7 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'You must keep track of what number we are on and decide what to say based off the rules of the game. If you are not sure take a guess';
+        const speakOutput = languageString[handlerInput.requestEnvelope.request.locale].helpMsg;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -165,7 +176,7 @@ const CancelAndStopIntentHandler = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
-        const speakOutput = 'Thank you for playing Fizz Buzz. I hope you enjoyed';
+        const speakOutput = languageString[handlerInput.requestEnvelope.request.locale].stopMsg;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -184,7 +195,7 @@ const FallbackIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
     },
     handle(handlerInput) {
-        const speakOutput = `Sorry, I didn't understand what you said. Please say a number or one of the keywords for the Fizz Buzz game.`;
+        const speakOutput = languageString[handlerInput.requestEnvelope.request.locale].fallbackMsg;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -238,7 +249,7 @@ const ErrorHandler = {
         return true;
     },
     handle(handlerInput, error) {
-        const speakOutput = 'Sorry, I had trouble doing what you asked. Please try again.';
+        const speakOutput = languageString[handlerInput.requestEnvelope.request.locale].errorMsg;
         console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
 
         return handlerInput.responseBuilder
