@@ -1,21 +1,31 @@
 /* *
- * This sample demonstrates handling intents from an Alexa skill using the Alexa Skills Kit SDK (v2).
- * Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
- * session persistence, api calls, and more.
+ * I used the basic boilerplate code provided by the Alexa developer console in order to code
+ * a voice-controlled version of the infamous Fizz Buzz math game
  * */
-const Alexa = require('ask-sdk-core');
+
+ const Alexa = require('ask-sdk-core');
+
+ // currentNum is a global variable that keeps track of what number the fizz buzz game is at
 let currentNum = 1;
 
+// The LaunchRequestHandler handles the launching of this skill by invocation name Fizz Buzz 
 const LaunchRequestHandler = {
+    // canHandle ensures that the request is a Launch Request
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
+        // at the start of every new game of Fizz Buzz currentNum is reset to 1
         currentNum = 1;
-        const speakOutput = `Welcome to Fizz Buzz. We’ll each take turns counting up from one. However, you must replace numbers divisible by 3 with the word “fizz” and you must replace numbers divisible by 5 with the word “buzz”. If a number is divisible by both 3 and 5, you should instead say “fizz buzz”. If you get one wrong, you lose.
-                            
-                            OK, I’ll start... One.`;
+        // This provides the initial instructions for the Fizz Buzz Game
+        const speakOutput = `Welcome to Fizz Buzz. We’ll each take turns counting up from one. 
+                             However, you must replace numbers divisible by 3 with the word “fizz”
+                             and you must replace numbers divisible by 5 with the word “buzz”. If a
+                             number is divisible by both 3 and 5, you should instead say “fizz buzz”. 
+                             If you get one wrong, you lose.
+                             OK, I’ll start... One.`;
         
+        // a remprompt is added just in case the user doesn't know what to do next
         const repromptOutput = 'Now you must decide what to say for the number 2';
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -24,15 +34,26 @@ const LaunchRequestHandler = {
     }
 };
 
+/* The FizzBuzzIntentHandler is the core componenet of the backend of this Alexa skill.
+*  This intent is activated or called when the utterance of a number or one of the keywords ("fizz", "buzz", or "fizz buzz")
+*  This handler relies on two functions isFizzBuzz and sayFizzBuzz
+*/
 const FizzBuzzIntentHandler = {
+    // canHandle ensures that the request is FizzBuzzIntent based off the utterances
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'FizzBuzzIntent';
     },
     handle(handlerInput) {
+        // this intent is called once the user gives an answer therefore currentNum is incremented by one since its is initialized to 1
         currentNum++;
+        // the variable userInput stores the answer provided by the user in the response 
         var userInput;
         
+        /* if a user said a number it should be stored in the number slot of the request
+        *  else the user said a keyword in which case it is stored in the keyword slot of the request
+        *  to avoid any errors in the voice interaction everything is lower case
+        */ 
         if(handlerInput.requestEnvelope.request.intent.slots.number.value) {
             userInput = handlerInput.requestEnvelope.request.intent.slots.number.value.toLowerCase();
         }
@@ -40,10 +61,15 @@ const FizzBuzzIntentHandler = {
             userInput = handlerInput.requestEnvelope.request.intent.slots.keyword.value.toLowerCase();
         }
         
-        
+        /* If the user says the correct answer which is checked by the isFizzBuzz function the currentNum is incremented and 
+        *  the sayFizzBuzz function is called to determine what Alexa should say 
+        *  Else if the user says the wrong answer currentNum is incremented and Alexa provides the correct response
+        */
         if(isFizzBuzz(currentNum, userInput)) {
+            // incremented since the user says the right answer
             currentNum++;
             const speakOutput = sayFizzBuzz(currentNum);
+            // this responseBuilder outputs what Alexa should say based off the currentNum and ensures the session doesn't end
             return handlerInput.responseBuilder
             .speak(speakOutput)
             .withShouldEndSession(false)
@@ -51,6 +77,7 @@ const FizzBuzzIntentHandler = {
         }
         else {
             const speakOutput = `I'm sorry the correct response was “${sayFizzBuzz(currentNum)}”. You lose! Thanks for playing Fizz Buzz. For another great Alexa game, check out Song Quiz!`;
+            // this responseBuilder outputs the closing remarks of the skill and exits gracefully
             return handlerInput.responseBuilder
             .speak(speakOutput)
             .withShouldEndSession(true)
@@ -59,20 +86,7 @@ const FizzBuzzIntentHandler = {
     }
 };
 
-const RepeatIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'RepeatIntent';
-    },
-    handle(handlerInput) {
-        const speakOutput = `${currentNum}`;
-        return handlerInput.responseBuilder
-        .speak(speakOutput)
-        .withShouldEndSession(false)
-        .getResponse();
-    }
-};
-
+// isFizzBuzz takes as inputs the currentNum and the userInput and outputs a boolean if the user provides the right answer
 function isFizzBuzz(n, userInput) {
     if(n % 3 === 0 && n % 5 !== 0) {
         return userInput === 'fizz';
@@ -87,6 +101,8 @@ function isFizzBuzz(n, userInput) {
         return userInput === `${n}`;
     }
 }
+
+// sayFizzBuzz takes as input the currentNum and outputs a string of what Alexa should say on its turn
 function sayFizzBuzz(n) {
     if(n % 3 === 0 && n % 5 !== 0) {
         return 'fizz';
@@ -102,6 +118,24 @@ function sayFizzBuzz(n) {
     }
 }
 
+// The RepeatIntentHandler repeats the number Alexa just said in case the user didn't hear it, if the skill is active
+const RepeatIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'RepeatIntent';
+    },
+    handle(handlerInput) {
+        const speakOutput = `${currentNum}`;
+        // this intent shouldn't end the skill or change the currentNum
+        return handlerInput.responseBuilder
+        .speak(speakOutput)
+        .withShouldEndSession(false)
+        .getResponse();
+    }
+};
+
+
+// The HelpIntentHandler responds to the help command when the skill is active
 const HelpIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -117,6 +151,7 @@ const HelpIntentHandler = {
     }
 };
 
+// The CancelAndStopIntentHandler responds to the stop and cancel command when the skill is active
 const CancelAndStopIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -132,6 +167,7 @@ const CancelAndStopIntentHandler = {
     }
 };
 /* *
+ * This is part of the Amazon boilerplate code
  * FallbackIntent triggers when a customer says something that doesn’t map to any intents in your skill
  * It must also be defined in the language model (if the locale supports it)
  * This handler can be safely added but will be ingnored in locales that do not support it yet 
@@ -151,6 +187,7 @@ const FallbackIntentHandler = {
     }
 };
 /* *
+ * This is part of the Amazon boilerplate code
  * SessionEndedRequest notifies that a session was ended. This handler will be triggered when a currently open 
  * session is closed for one of the following reasons: 1) The user says "exit" or "quit". 2) The user does not 
  * respond or says something that does not match an intent defined in your voice model. 3) An error occurs 
@@ -166,6 +203,7 @@ const SessionEndedRequestHandler = {
     }
 };
 /* *
+ * This is part of the Amazon boilerplate code
  * The intent reflector is used for interaction model testing and debugging.
  * It will simply repeat the intent the user said. You can create custom handlers for your intents 
  * by defining them above, then also adding them to the request handler chain below 
@@ -205,6 +243,7 @@ const ErrorHandler = {
 };
 
 /**
+ * This is part of the Amazon boilerplate code and I added the FizzBuzz and Repeat Intent Handlers
  * This handler acts as the entry point for your skill, routing all request and response
  * payloads to the handlers above. Make sure any new handlers or interceptors you've
  * defined are included below. The order matters - they're processed top to bottom 
