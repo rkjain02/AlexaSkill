@@ -5,6 +5,15 @@
 
  const Alexa = require('ask-sdk-core');
 
+ const languageString = {
+     "en-US" : {
+         welcomeMsg : `Welcome to Fizz Buzz.`
+     },
+     "es-US" : {
+         welcomeMsg : `Bienvenido a Fizz Buzz.`
+     }
+ };
+
  // currentNum is a global variable that keeps track of what number the fizz buzz game is at
 let currentNum = 1;
 
@@ -18,17 +27,12 @@ const LaunchRequestHandler = {
         // at the start of every new game of Fizz Buzz currentNum is reset to 1
         currentNum = 1;
         // This provides the initial instructions for the Fizz Buzz Game
-        const speakOutput = `Welcome to Fizz Buzz. We’ll each take turns counting up from one. 
-                             However, you must replace numbers divisible by 3 with the word “fizz”
-                             and you must replace numbers divisible by 5 with the word “buzz”. If a
-                             number is divisible by both 3 and 5, you should instead say “fizz buzz”. 
-                             If you get one wrong, you lose.
-                             OK, I’ll start... One.`;
+        const speakOutput = languageString[handlerInput.requestEnvelope.request.locale].welcomeMsg;
         
         // a remprompt is added just in case the user doesn't know what to do next
         const repromptOutput = 'Now you must decide what to say for the number 2';
         return handlerInput.responseBuilder
-            .speak(handlerInput.requestEnvelope.request.locale)
+            .speak(speakOutput)
             .reprompt(repromptOutput)
             .getResponse();
     }
