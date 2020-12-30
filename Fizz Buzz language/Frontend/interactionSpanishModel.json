@@ -1,0 +1,83 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "fizz buzz",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "FizzBuzzIntent",
+                    "slots": [
+                        {
+                            "name": "number",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "keyword",
+                            "type": "keyword"
+                        }
+                    ],
+                    "samples": [
+                        "{keyword}",
+                        "{number}"
+                    ]
+                },
+                {
+                    "name": "RepeatIntent",
+                    "slots": [],
+                    "samples": [
+                        "podrías repetir eso por favor",
+                        "repite eso",
+                        "podría repetir eso",
+                        "qué fue eso",
+                        "otra vez",
+                        "Podrías repetir lo que dijiste",
+                        "Podría repetir",
+                        "podrías repeti",
+                        "repetir"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "keyword",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "fizz buzz"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "buzz"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "fizz"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
