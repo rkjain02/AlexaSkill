@@ -125,7 +125,7 @@ const RepeatIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'RepeatIntent';
     },
     handle(handlerInput) {
-        const speakOutput = `${currentNum}`;
+        const speakOutput = `${sayFizzBuzz(currentNum)}`;
         // this intent shouldn't end the skill or change the currentNum
         return handlerInput.responseBuilder
         .speak(speakOutput)
