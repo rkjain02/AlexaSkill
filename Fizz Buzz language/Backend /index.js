@@ -7,10 +7,12 @@
 
  const languageString = {
      "en-US" : {
-         welcomeMsg : `Welcome to Fizz Buzz.`
+         welcomeMsg : `Welcome to Fizz Buzz. We’ll each take turns counting up from one. However, you must replace numbers divisible by 3 with the word “fizz” and you must replace numbers divisible by 5 with the word “buzz”. If a number is divisible by both 3 and 5, you should instead say “fizz buzz”. If you get one wrong, you lose.`,
+         welcomeRepromptMsg : 'Now you must decide what to say for the number 2',
      },
      "es-US" : {
-         welcomeMsg : `Bienvenido a Fizz Buzz.`
+         welcomeMsg : `Bienvenido a Fizz Buzz. Cada uno de nosotros se turnará para contar desde uno. Sin embargo, debe reemplazar los números divisibles por 3 con la palabra "efervescencia" y debe reemplazar los números divisibles por 5 con la palabra "buzz". Si un número es divisible tanto por 3 como por 5, en su lugar debería decir "efervescencia". Si te equivocas, pierdes.`,
+         welcomeRepromptMsg : 'Ahora debes decidir qué decir para el número 2', 
      }
  };
 
