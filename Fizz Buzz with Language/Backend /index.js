@@ -280,8 +280,8 @@ const LocalisationRequestInterceptor = {
             lng: Alexa.getLocale(handlerInput.requestEnvelope),
             resources: languageStrings
         }).then((t) => {
-            handlerInput.t = (...args) => t(...args)
-        })
+            handlerInput.t = (...args) => t(...args);
+        });
     }
 }; 
 
