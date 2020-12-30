@@ -49,15 +49,14 @@
                     "name": "RepeatIntent",
                     "slots": [],
                     "samples": [
-                        "podrias repetir eso por favor",
+                        "podrías repetir eso por favor",
                         "repite eso",
-                        "podria repetir eso",
-                        "No te escuche, podrias repetir eso",
-                        "que fue eso",
+                        "podría repetir eso",
+                        "qué fue eso",
                         "otra vez",
-                        "Podrias repetir lo que dijiste",
-                        "Podria repetir",
-                        "podrias repeti",
+                        "Podrías repetir lo que dijiste",
+                        "Podría repetir",
+                        "podrías repeti",
                         "repetir"
                     ]
                 }
