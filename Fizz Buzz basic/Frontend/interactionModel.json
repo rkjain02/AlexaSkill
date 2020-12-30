@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "fizz buzz", 
+            "invocationName": "fizz buzz",
             "modelConfiguration": {
                 "fallbackIntentSensitivity": {
                     "level": "LOW"
