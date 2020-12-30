@@ -35,11 +35,11 @@ const LaunchRequestHandler = {
 };
 
 /* The FizzBuzzIntentHandler is the core componenet of the backend of this Alexa skill.
-*  This intent is activated or called when the utterance of a number or one of the keywords ("fizz", "buzz", or "fizz buzz")
+*  This intent is activated or called with the utterance of a number or one of the keywords ("fizz", "buzz", or "fizz buzz")
 *  This handler relies on two functions isFizzBuzz and sayFizzBuzz
 */
 const FizzBuzzIntentHandler = {
-    // canHandle ensures that the request is FizzBuzzIntent based off the utterances
+    // canHandle ensures that the request is a FizzBuzzIntent based off the utterances
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'FizzBuzzIntent';
@@ -62,14 +62,14 @@ const FizzBuzzIntentHandler = {
         }
         
         /* If the user says the correct answer which is checked by the isFizzBuzz function the currentNum is incremented and 
-        *  the sayFizzBuzz function is called to determine what Alexa should say 
+        *  the sayFizzBuzz function is called to determine what Alexa should say next
         *  Else if the user says the wrong answer currentNum is incremented and Alexa provides the correct response
         */
         if(isFizzBuzz(currentNum, userInput)) {
             // incremented since the user says the right answer
             currentNum++;
             const speakOutput = sayFizzBuzz(currentNum);
-            // this responseBuilder outputs what Alexa should say based off the currentNum and ensures the session doesn't end
+            // this responseBuilder outputs what Alexa should say based off the updated currentNum and ensures the session doesn't end
             return handlerInput.responseBuilder
             .speak(speakOutput)
             .withShouldEndSession(false)
@@ -118,7 +118,7 @@ function sayFizzBuzz(n) {
     }
 }
 
-// The RepeatIntentHandler repeats the number Alexa just said in case the user didn't hear it, if the skill is active
+// The RepeatIntentHandler repeats the number Alexa just said in case the user didn't hear it, only if the skill is active
 const RepeatIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -170,7 +170,7 @@ const CancelAndStopIntentHandler = {
  * This is part of the Amazon boilerplate code
  * FallbackIntent triggers when a customer says something that doesn’t map to any intents in your skill
  * It must also be defined in the language model (if the locale supports it)
- * This handler can be safely added but will be ingnored in locales that do not support it yet 
+ * This handler can be safely added but will be ignored in locales that do not support it yet 
  * */
 const FallbackIntentHandler = {
     canHandle(handlerInput) {
