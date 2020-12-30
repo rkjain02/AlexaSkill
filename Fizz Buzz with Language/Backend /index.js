@@ -51,15 +51,10 @@ const LaunchRequestHandler = {
         // at the start of every new game of Fizz Buzz currentNum is reset to 1
         currentNum = 1;
         // This provides the initial instructions for the Fizz Buzz Game
-        const speakOutput = `Welcome to Fizz Buzz. We’ll each take turns counting up from one. 
-                             However, you must replace numbers divisible by 3 with the word “fizz”
-                             and you must replace numbers divisible by 5 with the word “buzz”. If a
-                             number is divisible by both 3 and 5, you should instead say “fizz buzz”. 
-                             If you get one wrong, you lose.
-                             OK, I’ll start... One.`;
+        const speakOutput = handlerInput.translate('launchMsg');
         
         // a remprompt is added just in case the user doesn't know what to do next
-        const repromptOutput = 'Now you must decide what to say for the number 2';
+        const repromptOutput = handlerInput.translate('launchRepromptMsg');
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(repromptOutput)
@@ -101,7 +96,7 @@ const FizzBuzzIntentHandler = {
         if(isFizzBuzz(currentNum, userInput)) {
             // incremented since the user says the right answer
             currentNum++;
-            const speakOutput = sayFizzBuzz(currentNum);
+            const speakOutput = handlerInput.translate(sayFizzBuzz(currentNum));
             // this responseBuilder outputs what Alexa should say based off the updated currentNum and ensures the session doesn't end
             return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -109,7 +104,7 @@ const FizzBuzzIntentHandler = {
             .getResponse();
         }
         else {
-            const speakOutput = `I'm sorry the correct response was “${sayFizzBuzz(currentNum)}”. You lose! Thanks for playing Fizz Buzz. For another great Alexa game, check out Song Quiz!`;
+            const speakOutput = handlerInput.translate('wrongAnswerMsg');
             // this responseBuilder outputs the closing remarks of the skill and exits gracefully
             return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -158,7 +153,7 @@ const RepeatIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'RepeatIntent';
     },
     handle(handlerInput) {
-        const speakOutput = `${sayFizzBuzz(currentNum)}`;
+        const speakOutput = handlerInput.translate(`${sayFizzBuzz(currentNum)}`);
         // this intent shouldn't end the skill or change the currentNum
         return handlerInput.responseBuilder
         .speak(speakOutput)
@@ -175,7 +170,7 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'You must keep track of what number we are on and decide what to say based off the rules of the game. If you are not sure take a guess';
+        const speakOutput = handlerInput.translate('helpMsg');
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -192,7 +187,7 @@ const CancelAndStopIntentHandler = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
-        const speakOutput = 'Thank you for playing Fizz Buzz. I hope you enjoyed';
+        const speakOutput = handlerInput.translate('stopMsg');
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -211,7 +206,7 @@ const FallbackIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
     },
     handle(handlerInput) {
-        const speakOutput = `Sorry, I didn't understand what you said. Please say a number or one of the keywords for the Fizz Buzz game.`;
+        const speakOutput = handlerInput.translate('fallbackMsg');
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -265,7 +260,7 @@ const ErrorHandler = {
         return true;
     },
     handle(handlerInput, error) {
-        const speakOutput = 'Sorry, I had trouble doing what you asked. Please try again.';
+        const speakOutput = handlerInput.translate('errorMsg');
         console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
 
         return handlerInput.responseBuilder
