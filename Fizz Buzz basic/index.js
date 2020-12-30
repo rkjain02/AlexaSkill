@@ -178,7 +178,7 @@ const FallbackIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'Sorry, I don\'t know about that. Please try again.';
+        const speakOutput = `Sorry, I didn't understand what you said. Please say a number or one of the keywords for the Fizz Buzz game.`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -199,8 +199,7 @@ const SessionEndedRequestHandler = {
     handle(handlerInput) {
         console.log(`~~~~ Session ended: ${JSON.stringify(handlerInput.requestEnvelope)}`);
         // Any cleanup logic goes here.
-        const speakOutput = 'Thank you for playing Fizz Buzz. I hope you enjoyed';
-        return handlerInput.responseBuilder.speak(speakOutput).getResponse(); // notice we send an empty response
+        return handlerInput.responseBuilder.getResponse(); // notice we send an empty response
     }
 };
 /* *
