@@ -275,6 +275,18 @@ const ErrorHandler = {
     }
 };
 
+// This request interceptor will bind a translation function 'translate' to the handlerInput
+const LocalisationRequestInterceptor = {
+    process(handlerInput) {
+        i18n.init({
+            lng: Alexa.getLocale(handlerInput.requestEnvelope),
+            resources: languageStrings
+        }).then((translate) => {
+            handlerInput.translate = (...args) => translate(...args)
+        })
+    }
+}; 
+
 /**
  * This is part of the Amazon boilerplate code and I added the FizzBuzz and Repeat Intent Handlers
  * This handler acts as the entry point for your skill, routing all request and response
@@ -291,6 +303,9 @@ exports.handler = Alexa.SkillBuilders.custom()
         FallbackIntentHandler,
         SessionEndedRequestHandler,
         IntentReflectorHandler)
+    .addRequestInterceptors(
+        LocalisationRequestInterceptor
+    )
     .addErrorHandlers(
         ErrorHandler)
     .withCustomUserAgent('sample/hello-world/v1.2')
