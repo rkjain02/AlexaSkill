@@ -4,6 +4,7 @@
  * */
 
  const Alexa = require('ask-sdk-core');
+ const i18n = require('i18next');
 
  // currentNum is a global variable that keeps track of what number the fizz buzz game is at
 let currentNum = 1;
