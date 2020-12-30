@@ -4,38 +4,41 @@
  * */
 
  const Alexa = require('ask-sdk-core');
- const i18n = require('i18next');
+ const i18n = require('i18n');
 
  const languageStrings = {
-     'en' : {
-         launchMsg : `Welcome to Fizz Buzz. We’ll each take turns counting up from one. 
-         However, you must replace numbers divisible by 3 with the word “fizz”
-         and you must replace numbers divisible by 5 with the word “buzz”. If a
-         number is divisible by both 3 and 5, you should instead say “fizz buzz”. 
-         If you get one wrong, you lose.
-         OK, I’ll start... One.`,
-         launchRepromptMsg :  'Now you must decide what to say for the number 2',
-         wrongAnswerMsg : `I'm sorry the correct response was “${sayFizzBuzz(currentNum)}”. You lose! Thanks for playing Fizz Buzz. For another great Alexa game, check out Song Quiz!`,
-         helpMsg : `You must keep track of what number we are on and decide what to say based off the rules of the game. If you are not sure take a guess`,
-         stopMsg : 'Thank you for playing Fizz Buzz. I hope you enjoyed', 
-         fallbackMsg : `Sorry, I didn't understand what you said. Please say a number or one of the keywords for the Fizz Buzz game.`,
-         errorMsg : 'Sorry, I had trouble doing what you asked. Please try again.'
+     'en-US' : {
+         translation: {
+            launchMsg : `Welcome to Fizz Buzz. We’ll each take turns counting up from one. 
+            However, you must replace numbers divisible by 3 with the word “fizz”
+            and you must replace numbers divisible by 5 with the word “buzz”. If a
+            number is divisible by both 3 and 5, you should instead say “fizz buzz”. 
+            If you get one wrong, you lose.
+            OK, I’ll start... One.`,
+            launchRepromptMsg :  'Now you must decide what to say for the number 2',
+            wrongAnswerMsg : `I'm sorry the correct response was “${sayFizzBuzz(currentNum)}”. You lose! Thanks for playing Fizz Buzz. For another great Alexa game, check out Song Quiz!`,
+            helpMsg : `You must keep track of what number we are on and decide what to say based off the rules of the game. If you are not sure take a guess`,
+            stopMsg : 'Thank you for playing Fizz Buzz. I hope you enjoyed', 
+            fallbackMsg : `Sorry, I didn't understand what you said. Please say a number or one of the keywords for the Fizz Buzz game.`,
+            errorMsg : 'Sorry, I had trouble doing what you asked. Please try again.'
+         }
      },
-     'es-us' : {
-        launchMsg : `Bienvenido a Fizz Buzz. Cada uno de nosotros se turnará para contar desde uno.
-        Sin embargo, debes reemplazar los números divisibles por 3 con la palabra "fizz"
-        y debe reemplazar los números divisibles por 5 con la palabra "buzz". Si un
-        número es divisible por 3 y 5, en su lugar debería decir "efervescencia".
-        Si te equivocas, pierdes.
-        Bien, empezaré ... Uno.`, 
-        launchRepromptMsg : 'Ahora debes decidir qué decir para el número 2',
-        wrongAnswerMsg : `Lo siento, la respuesta correcta fue" ${sayFizzBuzz(currentNum)} ". ¡Tú pierdes! Gracias por jugar a Fizz Buzz. ¡Para otro gran juego de Alexa, echa un vistazo a Song Quiz! `,
-        helpMsg : `Debe realizar un seguimiento de en qué número estamos y decidir qué decir basándose en las reglas del juego. Si no está seguro, adivine`,
-        stopMsg : `Gracias por jugar a Fizz Buzz. Espero que lo hayas disfrutado'`,
-        fallbackMsg : `Lo siento, no entendí lo que dijiste. Diga un número o una de las palabras clave para el juego Fizz Buzz.`, 
-        errorMsg : 'Lo siento, tuve problemas para hacer lo que me pediste. Inténtalo de nuevo.', 
+     'es-US' : {
+        translation: {
+            launchMsg : `Bienvenido a Fizz Buzz. Cada uno de nosotros se turnará para contar desde uno.
+            Sin embargo, debes reemplazar los números divisibles por 3 con la palabra "fizz"
+            y debe reemplazar los números divisibles por 5 con la palabra "buzz". Si un
+            número es divisible por 3 y 5, en su lugar debería decir "efervescencia".
+            Si te equivocas, pierdes.
+            Bien, empezaré ... Uno.`, 
+            launchRepromptMsg : 'Ahora debes decidir qué decir para el número 2',
+            wrongAnswerMsg : `Lo siento, la respuesta correcta fue" ${sayFizzBuzz(currentNum)} ". ¡Tú pierdes! Gracias por jugar a Fizz Buzz. ¡Para otro gran juego de Alexa, echa un vistazo a Song Quiz! `,
+            helpMsg : `Debe realizar un seguimiento de en qué número estamos y decidir qué decir basándose en las reglas del juego. Si no está seguro, adivine`,
+            stopMsg : `Gracias por jugar a Fizz Buzz. Espero que lo hayas disfrutado'`,
+            fallbackMsg : `Lo siento, no entendí lo que dijiste. Diga un número o una de las palabras clave para el juego Fizz Buzz.`, 
+            errorMsg : 'Lo siento, tuve problemas para hacer lo que me pediste. Inténtalo de nuevo.', 
+        }
      }
-     
  }
 
  // currentNum is a global variable that keeps track of what number the fizz buzz game is at
