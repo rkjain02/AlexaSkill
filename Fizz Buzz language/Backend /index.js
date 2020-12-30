@@ -11,7 +11,7 @@
          welcomeRepromptMsg : 'Now you must decide what to say for the number 2',
      },
      "es-US" : {
-         welcomeMsg : `Bienvenido a Fizz Buzz. Cada uno de nosotros se turnará para contar desde uno. Sin embargo, debe reemplazar los números divisibles por 3 con la palabra "efervescencia" y debe reemplazar los números divisibles por 5 con la palabra "buzz". Si un número es divisible tanto por 3 como por 5, en su lugar debería decir "efervescencia". Si te equivocas, pierdes.`,
+         welcomeMsg : `Bienvenido a Fizz Buzz. Cada uno de nosotros se turnará para contar desde uno. Sin embargo, debe reemplazar los números divisibles por 3 con la palabra "fizz" y debe reemplazar los números divisibles por 5 con la palabra "buzz". Si un número es divisible tanto por 3 como por 5, en su lugar debería decir "fizz buzz". Si te equivocas, pierdes.`,
          welcomeRepromptMsg : 'Ahora debes decidir qué decir para el número 2', 
      }
  };
