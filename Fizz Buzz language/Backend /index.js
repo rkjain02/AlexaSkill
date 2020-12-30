@@ -28,7 +28,7 @@ const LaunchRequestHandler = {
         // a remprompt is added just in case the user doesn't know what to do next
         const repromptOutput = 'Now you must decide what to say for the number 2';
         return handlerInput.responseBuilder
-            .speak(speakOutput)
+            .speak(handlerInput.requestEnvelope.request.locale)
             .reprompt(repromptOutput)
             .getResponse();
     }
