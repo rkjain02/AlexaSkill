@@ -277,7 +277,7 @@ const ErrorHandler = {
 const LocalisationRequestInterceptor = {
     process(handlerInput) {
         i18n.init({
-            lng: Alexa.getLocale(handlerInput.requestEnvelope),
+            lng: handlerInput.requestEnvelope.request.locale,
             resources: languageStrings
         }).then((t) => {
             handlerInput.t = (...args) => t(...args);

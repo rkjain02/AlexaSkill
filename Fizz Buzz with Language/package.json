@@ -12,6 +12,7 @@
     "ask-sdk-core": "^2.7.0",
     "ask-sdk-model": "^1.19.0",
     "aws-sdk": "^2.819.0",
-    "i18n": "^0.13.2"
+    "i18n": "^0.13.2",
+    "i18next-sprintf-postprocessor": "^0.2.2"
   }
 }
