@@ -1,5 +1,5 @@
 {
-  "name": "fizz-buzz-basic",
+  "name": "fizz-buzz-language",
   "version": "1.2.0",
   "description": "voice interaction fizz buzz game",
   "main": "index.js",

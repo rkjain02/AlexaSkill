@@ -54,10 +54,10 @@ const LaunchRequestHandler = {
         // at the start of every new game of Fizz Buzz currentNum is reset to 1
         currentNum = 1;
         // This provides the initial instructions for the Fizz Buzz Game
-        const speakOutput = handlerInput.translate('launchMsg');
+        const speakOutput = handlerInput.t('launchMsg');
         
         // a remprompt is added just in case the user doesn't know what to do next
-        const repromptOutput = handlerInput.translate('launchRepromptMsg');
+        const repromptOutput = handlerInput.t('launchRepromptMsg');
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(repromptOutput)
@@ -99,7 +99,7 @@ const FizzBuzzIntentHandler = {
         if(isFizzBuzz(currentNum, userInput)) {
             // incremented since the user says the right answer
             currentNum++;
-            const speakOutput = handlerInput.translate(sayFizzBuzz(currentNum));
+            const speakOutput = handlerInput.t(sayFizzBuzz(currentNum));
             // this responseBuilder outputs what Alexa should say based off the updated currentNum and ensures the session doesn't end
             return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -107,7 +107,7 @@ const FizzBuzzIntentHandler = {
             .getResponse();
         }
         else {
-            const speakOutput = handlerInput.translate('wrongAnswerMsg');
+            const speakOutput = handlerInput.t('wrongAnswerMsg');
             // this responseBuilder outputs the closing remarks of the skill and exits gracefully
             return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -156,7 +156,7 @@ const RepeatIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'RepeatIntent';
     },
     handle(handlerInput) {
-        const speakOutput = handlerInput.translate(`${sayFizzBuzz(currentNum)}`);
+        const speakOutput = handlerInput.t(`${sayFizzBuzz(currentNum)}`);
         // this intent shouldn't end the skill or change the currentNum
         return handlerInput.responseBuilder
         .speak(speakOutput)
@@ -173,7 +173,7 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = handlerInput.translate('helpMsg');
+        const speakOutput = handlerInput.t('helpMsg');
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -190,7 +190,7 @@ const CancelAndStopIntentHandler = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
-        const speakOutput = handlerInput.translate('stopMsg');
+        const speakOutput = handlerInput.t('stopMsg');
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -209,7 +209,7 @@ const FallbackIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
     },
     handle(handlerInput) {
-        const speakOutput = handlerInput.translate('fallbackMsg');
+        const speakOutput = handlerInput.t('fallbackMsg');
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -263,7 +263,7 @@ const ErrorHandler = {
         return true;
     },
     handle(handlerInput, error) {
-        const speakOutput = handlerInput.translate('errorMsg');
+        const speakOutput = handlerInput.t('errorMsg');
         console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
 
         return handlerInput.responseBuilder
@@ -273,14 +273,14 @@ const ErrorHandler = {
     }
 };
 
-// This request interceptor will bind a translation function 'translate' to the handlerInput
+// This request interceptor will bind a translation function 't' to the handlerInput
 const LocalisationRequestInterceptor = {
     process(handlerInput) {
         i18n.init({
             lng: Alexa.getLocale(handlerInput.requestEnvelope),
             resources: languageStrings
-        }).then((translate) => {
-            handlerInput.translate = (...args) => translate(...args)
+        }).then((t) => {
+            handlerInput.t = (...args) => t(...args)
         })
     }
 }; 
