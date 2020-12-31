@@ -1,10 +1,14 @@
-/* *
+/* 
  * I used the basic boilerplate code provided by the Alexa developer console in order to code
  * a voice-controlled version of the infamous Fizz Buzz math game
  * */
 
 const Alexa = require('ask-sdk-core');
 
+/* The languageString object stores the different messages that Alexa provides for the intents
+*  Each locale's code is mapped to a message so that depending on the locale a different response is provided
+*  Currently only US english and US spanish are supported 
+*/
 const languageString = {
     "en-US" : {
         welcomeMsg : `Welcome to Fizz Buzz. We’ll each take turns counting up from one. However, you must replace numbers divisible by 3 with the word “fizz” and you must replace numbers divisible by 5 with the word “buzz”. If a number is divisible by both 3 and 5, you should instead say “fizz buzz”. If you get one wrong, you lose. OK, I’ll start... One.`,
@@ -28,7 +32,7 @@ const languageString = {
 // currentNum is a global variable that keeps track of what number the fizz buzz game is at
 let currentNum = 1;
 
-// The LaunchRequestHandler handles the launching of this skill by invocation name Fizz Buzz 
+// The LaunchRequestHandler handles the launching of this skill by the invocation name Fizz Buzz 
 const LaunchRequestHandler = {
    // canHandle ensures that the request is a Launch Request
    canHandle(handlerInput) {
@@ -37,14 +41,14 @@ const LaunchRequestHandler = {
    handle(handlerInput) {
        // at the start of every new game of Fizz Buzz currentNum is reset to 1
        currentNum = 1;
-       // This provides the initial instructions for the Fizz Buzz Game
+       // This provides the initial instructions for the Fizz Buzz Game depending on the request's locale
        const speakOutput = languageString[handlerInput.requestEnvelope.request.locale].welcomeMsg;
        
        // a remprompt is added just in case the user doesn't know what to do next
        const repromptOutput = languageString[handlerInput.requestEnvelope.request.locale].welcomeRepromptMsg;
        return handlerInput.responseBuilder
            .speak(speakOutput)
-           .reprompt('Now you must decide what to say for the number 2')
+           .reprompt(repromptOutput)
            .getResponse();
    }
 };
@@ -62,7 +66,7 @@ const FizzBuzzIntentHandler = {
    handle(handlerInput) {
        // this intent is called once the user gives an answer therefore currentNum is incremented by one since its is initialized to 1
        currentNum++;
-       // the variable userInput stores the answer provided by the user in the response 
+       // the variable userInput stores the answer provided by the user in the response using the slots created in the interaction Model
        var userInput;
        
        /* if a user said a number it should be stored in the number slot of the request
@@ -79,6 +83,8 @@ const FizzBuzzIntentHandler = {
        /* If the user says the correct answer which is checked by the isFizzBuzz function the currentNum is incremented and 
        *  the sayFizzBuzz function is called to determine what Alexa should say next
        *  Else if the user says the wrong answer currentNum is incremented and Alexa provides the correct response
+       *  For the wrong answer the locale has to be checked to determine the correct response
+       *  The languageString object doesn't store this response since it dynamically changes based off where in the game the user is
        */
        if(isFizzBuzz(currentNum, userInput)) {
            // incremented since the user says the right answer
@@ -92,6 +98,7 @@ const FizzBuzzIntentHandler = {
        }
        else {
            let speakOutput = ''; 
+           // Since only english and spanish are supported a simple if else is used, but to expand locales a switch statement would be better
            if(handlerInput.requestEnvelope.request.locale === 'en-US') {
                speakOutput = `I'm sorry the correct response was “${sayFizzBuzz(currentNum)}”. You lose! Thanks for playing Fizz Buzz. For another great Alexa game, check out Song Quiz!`;
            }
@@ -110,21 +117,26 @@ const FizzBuzzIntentHandler = {
 
 // isFizzBuzz takes as inputs the currentNum and the userInput and outputs a boolean if the user provides the right answer
 function isFizzBuzz(n, userInput) {
-   if(n % 3 === 0 && n % 5 !== 0) {
+   // the only divisible by 3 case
+    if(n % 3 === 0 && n % 5 !== 0) {
        return userInput === 'fizz';
    }
+   // the only divisible by 5 case
    else if (n % 5 === 0 && n % 3 !== 0) {
        return userInput === 'buzz';
    }
+   // divisible by 3 and 5 case
    else if(n % 3 === 0 && n % 5 === 0) {
        return userInput === 'fizz buzz';
    }
+   // divisible by neither case
    else {
        return userInput === `${n}`;
    }
 }
 
-// sayFizzBuzz takes as input the currentNum and outputs a string of what Alexa should say on its turn
+// sayFizzBuzz takes as input the currentNum which is properly incremented by the FizzBuzz Intent Handler
+// and outputs a string of what Alexa should say on its turn
 function sayFizzBuzz(n) {
    if(n % 3 === 0 && n % 5 !== 0) {
        return 'fizz';
@@ -188,11 +200,10 @@ const CancelAndStopIntentHandler = {
            .getResponse();
    }
 };
-/* *
-* This is part of the Amazon boilerplate code
-* FallbackIntent triggers when a customer says something that doesn’t map to any intents in your skill
-* It must also be defined in the language model (if the locale supports it)
-* This handler can be safely added but will be ignored in locales that do not support it yet 
+/* This is part of the Amazon boilerplate code
+*  FallbackIntent triggers when a customer says something that doesn’t map to any intents in your skill
+*  It must also be defined in the language model (if the locale supports it)
+*  This handler can be safely added but will be ignored in locales that do not support it yet 
 * */
 const FallbackIntentHandler = {
    canHandle(handlerInput) {
@@ -208,12 +219,12 @@ const FallbackIntentHandler = {
            .getResponse();
    }
 };
-/* *
-* This is part of the Amazon boilerplate code
-* SessionEndedRequest notifies that a session was ended. This handler will be triggered when a currently open 
-* session is closed for one of the following reasons: 1) The user says "exit" or "quit". 2) The user does not 
-* respond or says something that does not match an intent defined in your voice model. 3) An error occurs 
-* */
+/* 
+This is part of the Amazon boilerplate code
+SessionEndedRequest notifies that a session was ended. This handler will be triggered when a currently open 
+session is closed for one of the following reasons: 1) The user says "exit" or "quit". 2) The user does not 
+respond or says something that does not match an intent defined in your voice model. 3) An error occurs 
+*/
 const SessionEndedRequestHandler = {
    canHandle(handlerInput) {
        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
